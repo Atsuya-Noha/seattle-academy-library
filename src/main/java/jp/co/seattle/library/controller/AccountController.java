@@ -49,7 +49,7 @@ public class AccountController {
 
 		// バリデーションチェック、パスワード一致チェック（タスク１）
 		//バリエーションチェック
-		if (password.matches("[0-9a-zA-Z+") && password.length() >= 8) {
+		if (password.matches("＾[0-9a-zA-Z]+$") && password.length() >= 8) {
 		}else {
 			model.addAttribute("errorMessage", "パスワードは8文字以上かつ半角英数字に設定してください。");
 			return "createAccount";
