@@ -29,6 +29,11 @@
                     <input type="submit" class="button primary" value="ログイン" />
                 </form>
             </div>
+            <div class="right">
+            <ul>
+               		<li><a href="<%=request.getContextPath()%>/passworsReset">パスワードリセット</a></li>
+            </ul>
+        </div>
             <div class="authorization_navi">
                 <label class="authorization_text">まだアカウントをお持ちでないですか？</label> <a class="authorization_link marker" href="<%=request.getContextPath()%>/newAccount">アカウント作成</a>
             </div>

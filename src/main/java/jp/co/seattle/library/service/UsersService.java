@@ -51,5 +51,11 @@ public class UsersService {
 			return null;
 		}
 	}
-
+	/**
+	 * パスワードをリセットする
+	 * @param email    メールアドレス
+	 * @param password パスワード
+	 * @return ユーザー情報
+	 */
+	
 }
