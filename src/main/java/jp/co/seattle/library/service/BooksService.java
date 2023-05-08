@@ -33,7 +33,7 @@ public class BooksService {
 
 		// TODO 書籍名の昇順で書籍情報を取得するようにSQLを修正（タスク３）
 		List<BookInfo> getedBookList = jdbcTemplate.query(
-				"SELECT * FROM books ORDER BY title ASC ",
+				"SELECT * FROM books",
 				new BookInfoRowMapper());
 			
 		return getedBookList;
@@ -98,6 +98,52 @@ public class BooksService {
 			jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
 					bookInfo.getPublishDate(), bookInfo.getThumbnailName(), bookInfo.getThumbnailUrl(),
 					bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getBookId());
+			}	
 		}
+	//タスク7 検索窓
+	/**
+	 * 
+	 * @param searchBook
+	 * @retun
+	 */
+	public List<BookInfo> searchBook(String searchBook) {
+				String sql = "SELECT * FROM books WHERE title LIKE ? ORDER BY title ASC ";
+				String search = "%" + searchBook + "%";
+				List<BookInfo> searchBookList = jdbcTemplate.query(sql, new BookInfoRowMapper(), search);
+				
+		return searchBookList;
 	}
+	
+	public List<BookInfo> sortBookListAsc() {
+		// タスク7昇順
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books ORDER BY title ASC ",
+				new BookInfoRowMapper());
+		return getedBookList;
+	}
+	
+	public List<BookInfo> sortBookListDesc() {
+		// タスク7降順
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books ORDER BY title DESC ",
+				new BookInfoRowMapper());
+		return getedBookList;
+	}
+	
+	public List<BookInfo> sortBookListAuthor() {
+		// タスク7著者名順
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books ORDER BY author ASC ",
+				new BookInfoRowMapper());
+		return getedBookList;
+	}
+	
+	public List<BookInfo> sortBookListDate() {
+		// タスク7著者名順
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books ORDER BY publish_date ASC ",
+				new BookInfoRowMapper());	
+		return getedBookList;
+	}
+	
 }

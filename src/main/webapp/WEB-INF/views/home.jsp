@@ -18,6 +18,9 @@
             <div class="logo">Seattle Library</div>
         </div>
         <div class="right">
+        	<form action="searchBook" method="GET">
+			<input type="search" id="book-search" name="searchBook" placeholder="書籍名を入れてください"><button>Search</button>
+			</form>
             <ul>
                 <li><a href="<%=request.getContextPath()%>/home" class="menu">Home</a></li>
                 <li><a href="<%=request.getContextPath()%>/">ログアウト</a></li>
@@ -27,7 +30,25 @@
     <main>
         <h1>Home</h1>
         <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a>
+         <%--
+        <form>
+        	<select id="sort" name="sort">
+        		<option value="TitlesortASC"><a href="<%=request.getContextPath()%>/sortASC"  name="ASC" class="btn_add_book">昇順</a></option>
+        		<option value="TitlesortDESC"><a href="<%=request.getContextPath()%>/sortDESC"  name="DESC" class="btn_add_book">降順</a></option>
+       			<option value="Authorsort"><a href="<%=request.getContextPath()%>/sortAuthor"  name="author" class="btn_add_book">著者名順</a></option>
+        		<option value="Datesort"><a href="<%=request.getContextPath()%>/sortPublishDate"  name="date" class="btn_add_book">出版日順</a></option>
+        		<input type="submit" class="button primary" value="表示" />
+        	</select>
+        </form>
+         --%>
+        <a href="<%=request.getContextPath()%>/sortASC"  name="ASC" class="btn_add_book">昇順</a>
+        <a href="<%=request.getContextPath()%>/sortDESC"  name="DESC" class="btn_add_book">降順</a>
+        <a href="<%=request.getContextPath()%>/sortAuthor"  name="author" class="btn_add_book">著者名順</a>
+        <a href="<%=request.getContextPath()%>/sortPublishDate"  name="date" class="btn_add_book">出版日順</a>
         <div class="content_body">
+        	<c:if test="${!empty emptyMessage}">
+                <div class="error_msg">${emptyMessage}</div>
+            </c:if>
             <c:if test="${!empty resultMessage}">
                 <div class="error_msg">${resultMessage}</div>
             </c:if>

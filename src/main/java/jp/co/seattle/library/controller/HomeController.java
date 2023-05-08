@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.dto.BookInfo;
 import jp.co.seattle.library.service.BooksService;
@@ -29,12 +30,53 @@ public class HomeController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String transitionHome(Model model) {
-		//書籍の一覧情報を取得（タスク３）
-		List<BookInfo> bookList = booksService.getBookList();
+	//書籍0件のメッセージ
+		@RequestMapping(value = "/home", method = RequestMethod.GET)
+		public String transitionHome(Model model) {
+			List<BookInfo> bookList = booksService.getBookList();
+			if(bookList.isEmpty()) {
+				model.addAttribute("emptyMessage", "書籍情報はありません");
+			}else{
+				model.addAttribute("bookList", bookList);
+			}
+			return "home";
+		}
+	
+	
+	//タスク7
+	//書籍検索
+	@RequestMapping(value = "/searchBook", method = RequestMethod.GET)
+	public String searchBook(Model model, @RequestParam(name ="searchBook") String searchBook) {
+		List<BookInfo> bookList = booksService.searchBook(searchBook);
+		model.addAttribute("bookList", bookList);
+		return "home";
+	}
+	
+	
+	@RequestMapping(value = "/sortASC", method = RequestMethod.GET)
+	public String sortBookAsc(Model model){
+		List<BookInfo> bookList = booksService.sortBookListAsc();
+		model.addAttribute("bookList", bookList);
+		return "home";
+	}
+	
+	@RequestMapping(value = "/sortDESC", method = RequestMethod.GET)
+	public String sortBookDesc(Model model) {
+		List<BookInfo> bookList = booksService.sortBookListDesc();
 		model.addAttribute("bookList", bookList);
 		return "home";
 	}
 
+	@RequestMapping(value = "/sortAuthor", method = RequestMethod.GET)
+	public String sortBookAuthor(Model model) {
+		List<BookInfo> bookList = booksService.sortBookListAuthor();
+		model.addAttribute("bookList", bookList);
+		return "home";
+	}
+	@RequestMapping(value = "/sortPublishDate", method = RequestMethod.GET)
+	public String sortBookDate(Model model) {
+		List<BookInfo> bookList = booksService.sortBookListDate();
+		model.addAttribute("bookList", bookList);
+		return "home";
+	}
 }
