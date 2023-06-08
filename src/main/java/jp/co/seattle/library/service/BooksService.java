@@ -46,7 +46,7 @@ public class BooksService {
 	 * @return 書籍情報
 	 */
 	public BookDetailsInfo getBookInfo(int bookId) {
-		String sql = "SELECT id, title, author, publisher, publish_date, isbn, description, thumbnail_url, thumbnail_name FROM books WHERE books.id = ? ORDER BY title ASC;";
+		String sql = "SELECT id, title, author, publisher, publish_date, isbn, description, thumbnail_url, thumbnail_name, favorite, genre FROM books WHERE books.id = ? ORDER BY title ASC;";
 
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper(), bookId);
 
@@ -61,11 +61,11 @@ public class BooksService {
 	 */
 	public int registBook(BookDetailsInfo bookInfo) {
 		// TODO 取得した書籍情報を登録し、その書籍IDを返却するようにSQLを修正（タスク４）
-		String sql = "INSERT INTO books(title, author, publisher, publish_date, thumbnail_name, thumbnail_url, isbn, description, reg_date, upd_date) VALUES(?, ?, ?, ?, ?, ?, ?, ?, now(), now()) RETURNING id;";
+		String sql = "INSERT INTO books(title, author, publisher, publish_date, thumbnail_name, thumbnail_url, isbn, description, favorite, genre, reg_date, upd_date) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now()) RETURNING id;";
 
 		int bookId = jdbcTemplate.queryForObject(sql, int.class, bookInfo.getTitle(), bookInfo.getAuthor(),
 				bookInfo.getPublisher(), bookInfo.getPublishDate(), bookInfo.getThumbnailName(),
-				bookInfo.getThumbnailUrl(), bookInfo.getIsbn(), bookInfo.getDescription());
+				bookInfo.getThumbnailUrl(), bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getFavorite(), bookInfo.getGenre());
 		return bookId;
 	}
 
@@ -89,15 +89,15 @@ public class BooksService {
 		String sql;
 		if (bookInfo.getThumbnailUrl() == null) {
 			// TODO 取得した書籍情報を更新するようにSQLを修正（タスク５）
-			sql = "UPDATE books SET title = ?, author = ?, publisher = ?, publish_date = ?, isbn = ?, description = ?, upd_date = now() WHERE id = ?; ";
+			sql = "UPDATE books SET title = ?, author = ?, publisher = ?, publish_date = ?, isbn = ?, description = ?, genre = ?, upd_date = now() WHERE id = ?; ";
 			jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
-					bookInfo.getPublishDate(), bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getBookId());
+					bookInfo.getPublishDate(), bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getGenre(), bookInfo.getBookId());
 		} else {
 			// TODO 取得した書籍情報を更新するようにSQLを修正（タスク５）
-			sql = "UPDATE books SET title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, upd_date = now() WHERE id = ?; ";
+			sql = "UPDATE books SET title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, genre = ?, upd_date = now() WHERE id = ?; ";
 			jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
 					bookInfo.getPublishDate(), bookInfo.getThumbnailName(), bookInfo.getThumbnailUrl(),
-					bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getBookId());
+					bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getGenre(), bookInfo.getBookId());
 			}	
 		}
 	//タスク7 検索窓
@@ -146,4 +146,85 @@ public class BooksService {
 		return getedBookList;
 	}
 	
+	//お気に入り追加
+	/**
+	* @param bookInfo
+	*/
+	public void favoriteBooks(int bookId) {
+		String sql;
+			sql = "UPDATE books SET favorite = 1 WHERE id = ?; ";
+			jdbcTemplate.update(sql, bookId);
+	}
+	//お気に入り削除
+		/**
+		* @param bookInfo
+		*/
+	public void unfavoriteBooks(int bookId) {
+		String sql;
+			sql = "UPDATE books SET favorite =0 WHERE id = ?; ";
+			jdbcTemplate.update(sql, bookId);
+	}
+	
+	//お気に入り一覧
+//	public List<BookInfo> favoriteBooksList(Locale locale) {
+//		List<BookInfo> BookList = jdbcTemplate.query(
+//				"SELECT * FROM books WHERE favorite = 1;",
+//				new BookInfoRowMapper());	
+//		logger.info("favori", locale);
+//		return BookList;
+//	}
+	public List<BookInfo> Favorite() {
+		  // favorite
+		  List<BookInfo> getedBookList = jdbcTemplate.query(
+		    "SELECT * FROM books WHERE favorite = 1;",
+		  new BookInfoRowMapper());
+		  return getedBookList;
+		 }
+	
+	
+	//ジャンル分け
+//	public List<BookInfo> novelList() {
+//		List<BookInfo> getedBookList = jdbcTemplate.query(
+//				"SELECT * FROM books WHERE genre = '小説'; ",
+//				new BookInfoRowMapper());
+//		return getedBookList;
+//	}
+	public List<BookInfo> novelList() {
+		  // favorite
+		  List<BookInfo> getedBookList = jdbcTemplate.query(
+		    "SELECT * FROM books WHERE genre = '小説' ;",
+		  new BookInfoRowMapper());
+		  return getedBookList;
+		 }
+	
+	public List<BookInfo> comicList() {
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books WHERE genre = '漫画' ;",
+				new BookInfoRowMapper());
+		return getedBookList;
+	}
+	public List<BookInfo> businessList() {
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books WHERE genre = 'ビジネス' ;",
+				new BookInfoRowMapper());
+		return getedBookList;
+	}
+	public List<BookInfo> technologyList() {
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books WHERE genre = '専門書' ;",
+				new BookInfoRowMapper());
+		return getedBookList;
+	}
+	public List<BookInfo> magazineList() {
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"SELECT * FROM books WHERE genre = '雑誌' ;",
+				new BookInfoRowMapper());
+		return getedBookList;
+	}
+	
+//	//読了チェック
+//	public void readStatus(int bookId) {
+//	jdbcTemplate.update("UPDATE books SET status=? WHERE id= ? ;");
+//	// デバッグ用ログ
+//	}
 }

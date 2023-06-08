@@ -76,17 +76,74 @@
                         <span>説明文</span><span class="care care1">任意</span>
                         <input type="text" name="description" value="${bookInfo.description}">
                     </div>
+                    <p>
+						<span>ジャンルの選択</span><select name="genre" value="${bookInfo.genre}">
+						<option value="${bookInfo.genre}" selected hidden>${bookInfo.genre}</option>
+						<option value="小説">小説</option>
+						<option value="漫画">漫画</option>
+						<option value="ビジネス">ビジネス</option>
+						<option value="専門書">専門書</option>
+						<option value="雑誌">雑誌</option>
+						</select>
+					</p>
                     <input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
                 </div>
             </div>
             <div class="bookBtn_box">
-                <button type="submit" id="add-btn" class="btn_updateBook">更新</button>    
+                <button type="submit" id="add-btn" class="btn_updateBook">更新</button>  
+            </div>
         </form>
-        		<form method="post" action="deleteBook" name="delete">
+         <%-- <button id="button-open-dialog">絞り込む</button>
+         <dialog id="dialog-sample">
+		  	<div id="dialog-container">
+		    	<form id="form" method="dialog" class="dialog">
+			      <p>ジャンルで絞り込む</p>
+			      <li><a href="<%=request.getContextPath()%>/novel">小説</a></li>
+			      <li><a href="<%=request.getContextPath()%>/comics">漫画</a></li>
+			      <li><a href="<%=request.getContextPath()%>/business">ビジネス</a></li>
+			      <li><a href="<%=request.getContextPath()%>/technology">専門書</a></li>
+			      <li><a href="<%=request.getContextPath()%>/magazine">雑誌</a></li>
+			      <button id="default" value="default">×</button>
+		    	</form>
+		  	</div> 
+		</dialog> --%>
+        <button id="button-open-dialog">削除</button>
+			    <dialog id="dialog-sample">
+				  	<div id="dialog-container">
+				    	<div id="form" method="dialog" class="dialog">
+						      <p>本当に削除しますか</p>
+							      <form ethod="post" action="deleteBook" name="delete" >
+									<input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
+									<button type="submit" id="delete-btn" class="btn_deleteBook">削除</button> 
+					 			  </form>
+				    	</div>
+				  	</div> 
+				</dialog>
+        		<%-- <form method="post" action="deleteBook" name="delete">
 				<input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
 				<button type="submit" id="delete-btn" class="btn_deleteBook">削除</button> 
- 				</form>
- 			</div>      
+ 				</form> --%>
+ 			
     </main>
+    <script>
+    window.onload = function modal(){
+  //ダイアログ
+	const buttonOpenDialog = document.getElementById("button-open-dialog");
+	const dialogSample = document.getElementById("dialog-sample");
+	
+	//ダイアログを開くイベント
+	buttonOpenDialog.addEventListener("click", () => {
+	  dialogSample.showModal();
+	});
+	
+ 	//ダイアログのクリックイベント
+	dialogSample.addEventListener('click', (event) => {
+	  
+	  if(event.target.closest('#dialog-container') === null) {
+	    dialogSample.close();
+	  }
+	}); 
+    }
+	</script>
 </body>
 </html>
