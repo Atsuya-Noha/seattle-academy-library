@@ -101,8 +101,19 @@
                             <input type="text" name="description">
                         </c:if>
                     </div>
+                    <p>
+						<span>ジャンルの選択</span><select name="genre" value="${bookInfo.genre}">
+						<option value="${bookInfo.genre}"${bookInfo.genre}</option>
+						<option value="小説">小説</option>
+						<option value="漫画">漫画</option>
+						<option value="ビジネス">ビジネス</option>
+						<option value="専門書">専門書</option>
+						<option value="雑誌">雑誌</option>
+						</select>
+					</p>
                     <input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
                 </div>
+                
             </div>
             <div class="bookBtn_box">
                 <button type="submit" id="add-btn" class="btn_addBook">登録</button>
