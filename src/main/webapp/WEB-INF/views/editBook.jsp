@@ -93,41 +93,35 @@
                 <button type="submit" id="add-btn" class="btn_updateBook">更新</button>  
             </div>
         </form>
-         <%-- <button id="button-open-dialog">絞り込む</button>
-         <dialog id="dialog-sample">
-		  	<div id="dialog-container">
-		    	<form id="form" method="dialog" class="dialog">
-			      <p>ジャンルで絞り込む</p>
-			      <li><a href="<%=request.getContextPath()%>/novel">小説</a></li>
-			      <li><a href="<%=request.getContextPath()%>/comics">漫画</a></li>
-			      <li><a href="<%=request.getContextPath()%>/business">ビジネス</a></li>
-			      <li><a href="<%=request.getContextPath()%>/technology">専門書</a></li>
-			      <li><a href="<%=request.getContextPath()%>/magazine">雑誌</a></li>
-			      <button id="default" value="default">×</button>
-		    	</form>
-		  	</div> 
-		</dialog> --%>
+
         <button id="button-open-dialog">削除</button>
 			    <dialog id="dialog-sample">
 				  	<div id="dialog-container">
 				    	<div id="form" method="dialog" class="dialog">
 						      <p>本当に削除しますか</p>
-							      <form ethod="post" action="deleteBook" name="delete" >
+							      <form method="post" action="deleteBook" name="delete" >
 									<input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
 									<button type="submit" id="delete-btn" class="btn_deleteBook">削除</button> 
 					 			  </form>
 				    	</div>
 				  	</div> 
 				</dialog>
-        		<%-- <form method="post" action="deleteBook" name="delete">
-				<input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
-				<button type="submit" id="delete-btn" class="btn_deleteBook">削除</button> 
- 				</form> --%>
- 			
+        		
+        		<!-- API -->
+        		<form method="post" action="fromjsp" name="bookId" value="${bookInfo.bookId}">
+					<input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
+					<button type="submit" id="api-btn" class="api">ファイル出力</button> 
+				</form>
+				<c:if test="${!empty successMessage}">
+                	<div class="error_msg">${successMessage}</div>
+            	</c:if>
+            	<c:if test="${!empty errorMessage}">
+                	<div class="error_msg">${errorMessage}</div>
+            	</c:if>			
     </main>
     <script>
     window.onload = function modal(){
-  //ダイアログ
+  	//ダイアログ
 	const buttonOpenDialog = document.getElementById("button-open-dialog");
 	const dialogSample = document.getElementById("dialog-sample");
 	

@@ -1,12 +1,16 @@
 package jp.co.seattle.library.service;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.BookInfo;
@@ -227,4 +231,37 @@ public class BooksService {
 //	jdbcTemplate.update("UPDATE books SET status=? WHERE id= ? ;");
 //	// デバッグ用ログ
 //	}
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+	
+	/**
+	 * 
+	 * @param locale
+	 * @param bookInfo
+	 * @return メッセージ
+	 */
+	
+	public String callApi(Locale locale, BookDetailsInfo bookInfo) {
+		
+		ResourceBundle rb = ResourceBundle.getBundle("api");
+		String url = rb.getString("url");
+		logger.info("Api呼び出し", locale);
+		
+		try {
+			//API
+			String responseMessage = restTemplate.postForObject(url, bookInfo, String.class);
+			return responseMessage;
+			
+			} catch (Exception e) {
+			e.printStackTrace () ;
+			return "API接続に失敗しました";
+			}
+	}
 }

@@ -74,25 +74,6 @@ public class AddBooksController {
 		bookInfo.setDescription(description);
 		bookInfo.setGenre(genre);
 		
-		/*
-		//ジャンル分け
-		if(genre.equals("novel")) {
-			bookInfo.setGenre("novel");
-		}
-		if(genre.equals("comic")) {
-			bookInfo.setGenre("comic");
-		}
-		if(genre.equals("business")) {
-			bookInfo.setGenre("business");
-		}
-		if(genre.equals("technical")) {
-			bookInfo.setGenre("technical");
-		}
-		if(genre.equals("magazine")) {
-			bookInfo.setGenre("magazine");
-		}
-		*/
-		
 		List<String> errorList = bookUtil.checkBookInfo(bookInfo);
 		// errorListに一つでもエラーメッセージが入っていたら登録しない
 		if (errorList.size() > 0) {

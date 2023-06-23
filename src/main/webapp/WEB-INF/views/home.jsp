@@ -14,49 +14,10 @@
 
 </head>
 <body class="wrapper" >
-	<script type="text/javascript">
-	//パターン1の色設定開始
-		function color1() {
-			document.bgColor = "#D19826"; // bgcolor：背景色
-			document.fgColor = "#D19826"; // text：文字の基本色
-			document.linkColor = "#D19826"; // link：リンク文字の色
-			document.vlinkColor = "#D19826"; // vlink：リンク文字の色（アクセス済みのリンク）
-			document.alinkColor = "#ff8000"; // alink：リンク文字の色（クリックした瞬間の色）
-		}
-	// パターン1の色設定終了
-	// パターン2の色設定開始
-		function color2() {
-			document.bgColor = "#D1878B";
-			document.fgColor = "#D1878B";
-			document.linkColor = "#D1878B";
-			document.vlinkColor = "#D1878B";
-			document.alinkColor = "#ff8000";
-		}
-	// パターン2の色設定終了
-	//パターン3
-		function color3() {
-			document.bgColor = "#67A2A0";
-			document.fgColor = "#67A2A0";
-			document.linkColor = "#67A2A0";
-			document.vlinkColor = "#67A2A0";
-			document.alinkColor = "#ff8000";
-		}
-	//パターン3終了
-	</script>
     <header>
         <div class="left">
 				<img class="mark" src="resources/img/logo.png" />
 				<div class="logo">Metateam Library</div>
-			<div>
-				<button type="submit" value="🍊" class="buttonA" onClick="color1()">🍊</button>
-			</div>
-			<div>
-				<button type="submit" value="🍓" class="buttonA" onClick="color2()">🍓</button>
-			</div>
-			<div>
-				<button type="submit" value="🍈" class="buttonA" onClick="color3()">🍈</button>
-			</div>
-		</div>
 		<div class="right"></div>
     </header>
     <main>
@@ -67,14 +28,12 @@
   				<li><a href="<%=request.getContextPath()%>/home" class="menu">Home</a></li>
     			<li><a href="<%=request.getContextPath()%>/addBook">書籍の追加</a></li>
 			    <li><a href="<%=request.getContextPath()%>/favorite">お気に入り一覧</a></li>
-			    <li><a href="<%=request.getContextPath()%>/new">ゲーム</a></li>
                 <li><a href="<%=request.getContextPath()%>/">ログアウト</a></li>
   			</ul>
 		</div>
 			<!-- drawer -->
 		<button id="drawerOpen" class="drawerOpen">メニュー</button>
 			<!-- drawer -->
-    
 	    <button id="button-open-dialog">絞り込む</button>
 	    <dialog id="dialog-sample">
 		  	<div id="dialog-container">
@@ -95,7 +54,7 @@
 		<div class="popup" id="firstTimeModal">
 			<div class="popup-inner">
 			    <!-- ここに検索フォーム -->
-			    <form role="search" method="get" id="searchform" class="searchform" action="searchBook">
+			    <form role="search" method="get" id="searchform" class="searchform" action="/https://www.googleapis.com/books/v1/volumes?q=search+terms">
 			    	<div>
 			        	<input type="search" placeholder="書籍名" id="s" class="searchform__input" name="searchBook" value="" />
 			        	<p align="right"><button type="submit" id="searchsubmit" class="searchform__submit"><i class="fa fa-search"></i></p></button>
@@ -105,23 +64,6 @@
 		 	</div>
   			<div class="black-background" id="js-black-bg"></div>
 		</div>
-    	
-    	<div class="overlays"></div>
-		  <nav class="nav">
-		    <div class="toggle">
-		      <span id="deleteconpo" class="toggler"></span>
-		    </div>
-		    <div class="logo">
-		      <a href="#">LOGO</a>
-		    </div>
-		    <ul class="linkList">
-		      <li><a href="#">Home</a></li>
-		      <li><a href="#">About</a></li>
-		      <li><a href="#">Projects</a></li>
-		      <li><a href="#">Blog</a></li>
-		      <li><a href="#">Contact</a></li>
-		    </ul>
- 		</nav>
  		
         <form method="GET" action="sortBooks">
 			<select id="id_sort" name="sortBook" onchange="submit(this.form)">
@@ -230,30 +172,6 @@
 			document.getElementById('drawerClose').addEventListener('click', () => {
 				document.getElementById("drawerNavi").style.width = "0%";
 			});
-
-			//ドロワー
-			const toggler = document.querySelector(".toggle");
-
-			window.addEventListener("click", event => {
-			  if(event.target.className == "toggle" || event.target.className == "toggle") {
-			    document.body.classList.toggle("show-nav");
-			    document.getElementById("deleteconpo").classList.toggle("deleteclass")
-			  } else if (event.target.className == "overlay") {
-			    document.body.classList.remove("show-nav");
-			document.getElementById("deleteconpo").classList.toggle("deleteclass")
-			  }
-			
-			});
-			
-			
-			//ドロワーのメニューをクリックしたら非表示
-			const hrefLink = document.querySelectorAll('.linkList li a');
-			for (i = 0; i < hrefLink.length; i++) {
-			hrefLink[i].addEventListener("click", () => {
-			document.body.classList.remove("show-nav");
-			document.getElementById("deleteconpo").classList.toggle("deleteclass")
-			});
-			} 
 		</script> 
 	</body>
 </html> 
